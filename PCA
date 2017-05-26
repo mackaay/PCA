@@ -1,0 +1,30 @@
+library(psych)
+pc <- principal(USJudgeRatings[,-1], nfactors = 1)
+pc
+plot(pc)
+pc2<- princomp(USJudgeRatings[,-1], nfactors =1)
+plot(pc2)
+View(USJudgeRatings)
+fa.parallel(USJudgeRatings[,-1], fa ="pc", n.iter= 100, show.legend = FALSE )
+?fa.parallel
+
+
+library(devtools)
+install_github('sinhrks/ggfortify')
+library(ggfortify)
+
+if(!require(devtools)) install.packages("devtools")
+devtools::install_github("sinhrks/ggfortify")
+install.packages("ggfortify")
+library(ggfortify)
+
+
+
+
+pca <- principal(RUVIII.normalized.data.transformed_exclude.rep[,-c(1:6)], nfactors=2)
+
+pca <- principal(RUVIII.normalized.data.transformed_exclude.rep[,c(8:50)], nfactors=2)
+summary(pca)
+loadings(pca)
+plot(pca, type="lines")
+biplot(pca)
