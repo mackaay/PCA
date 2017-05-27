@@ -9,9 +9,6 @@ fa.parallel(USJudgeRatings[,-1], fa ="pc", n.iter= 100, show.legend = FALSE )
 ?fa.parallel
 
 
-library(devtools)
-install_github('sinhrks/ggfortify')
-library(ggfortify)
 
 if(!require(devtools)) install.packages("devtools")
 devtools::install_github("sinhrks/ggfortify")
@@ -19,7 +16,8 @@ install.packages("ggfortify")
 library(ggfortify)
 
 
-
+#princomp cannot deal with the siuation that facters are larger than variables#
+#principal and biplot can plot PCA but it includes signature vectors#
 
 pca <- principal(RUVIII.normalized.data.transformed_exclude.rep[,-c(1:6)], nfactors=2)
 
@@ -28,3 +26,45 @@ summary(pca)
 loadings(pca)
 plot(pca, type="lines")
 biplot(pca)
+
+
+
+#ggfortify#
+library(ggplot2)
+library(rlang)
+library(devtools)
+install_github('sinhrks/ggfortify')
+library(ggfortify)
+
+
+#demo and testing of USJudgeRatings#
+library(psych)
+View(USJudgeRatings)
+df <- USJudgeRatings[,-1]
+autoplot(prcomp(df))
+autoplot(prcomp(df), data = USJudgeRatings, colour = 'CONT')
+
+
+#RUVIII data#
+pca_1 <- prcomp(RUVIII.normalized.data.transformed_exclude.rep[,-c(1:6)])
+autoplot(pca_1)
+
+#color by grading#
+autoplot(pca_1, data = RUVIII.normalized.data.transformed_exclude.rep, colour = 'Grade')
+#norm frame#
+autoplot(pca_1, data = RUVIII.normalized.data.transformed_exclude.rep, colour = 'Grade', frame = T, frame.type = 'norm')
+#label#
+autoplot(pca_1, data = RUVIII.normalized.data.transformed_exclude.rep, colour = 'Grade', shape = F, label.size=3)
+as.factor(RUVIII.normalized.data.transformed_exclude.rep$IDH1)
+#colour by IDH1#
+autoplot(pca_1, data = RUVIII.normalized.data.transformed_exclude.rep, colour = 'IDH1')
+
+
+
+#IDH mutant status in LGG vs HGG#
+pca_2 <- prcomp(RUVIII.normalized.data.transformed_exclude.rep[-c(91:111),-c(1:6)])
+autoplot(pca_2, data = RUVIII.normalized.data.transformed_exclude.rep, colour = 'Grade')
+
+
+
+
