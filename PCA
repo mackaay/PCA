@@ -33,6 +33,7 @@ biplot(pca)
 library(ggplot2)
 library(rlang)
 library(devtools)
+library(digest)
 install_github('sinhrks/ggfortify')
 library(ggfortify)
 
@@ -57,14 +58,24 @@ autoplot(pca_1, data = RUVIII.normalized.data.transformed_exclude.rep, colour = 
 autoplot(pca_1, data = RUVIII.normalized.data.transformed_exclude.rep, colour = 'Grade', shape = F, label.size=3)
 as.factor(RUVIII.normalized.data.transformed_exclude.rep$IDH1)
 #colour by IDH1#
-autoplot(pca_1, data = RUVIII.normalized.data.transformed_exclude.rep, colour = 'IDH1')
+autoplot(pca_1, data = RUVIII.normalized.data.transformed_exclude.rep, colour = 'IDHmutant')
+#colour by Grade, shape by IDH1#
+autoplot(pca_1, data = RUVIII.normalized.data.transformed_exclude.rep, 
+         colour = 'Grade', shape = 'IDHmutant', size = 4)+
+  scale_shape_manual(values=c(32,16,1))
+
+autoplot(pca_1, data = RUVIII.normalized.data.transformed_exclude.rep, 
+         colour = 'Grade', shape = 'IDHmutant', size = 'Age')+
+  scale_shape_manual(values=c(32,16,1))
+
+autoplot(pca_1, data = RUVIII.normalized.data.transformed_exclude.rep, 
+         colour = 'Grade', shape = 'Gender', size = 4)
 
 
 
 #IDH mutant status in LGG vs HGG#
 pca_2 <- prcomp(RUVIII.normalized.data.transformed_exclude.rep[-c(91:111),-c(1:6)])
 autoplot(pca_2, data = RUVIII.normalized.data.transformed_exclude.rep, colour = 'Grade')
-
 
 
 
