@@ -47,7 +47,7 @@ autoplot(prcomp(df), data = USJudgeRatings, colour = 'CONT')
 
 
 #RUVIII data#
-pca_1 <- prcomp(RUVIII.normalized.data.transformed_exclude.rep[,-c(1:6)])
+pca_1 <- prcomp(RUVIII.normalized.data.transformed_exclude.rep[,-c(1:5)])
 autoplot(pca_1)
 
 #color by grading#
@@ -74,8 +74,16 @@ autoplot(pca_1, data = RUVIII.normalized.data.transformed_exclude.rep,
 
 
 #IDH mutant status in LGG vs HGG#
-pca_2 <- prcomp(RUVIII.normalized.data.transformed_exclude.rep[-c(91:111),-c(1:6)])
+pca_2 <- prcomp(RUVIII.normalized.data.transformed_exclude.rep[-c(91:111),-c(1:5)])
 autoplot(pca_2, data = RUVIII.normalized.data.transformed_exclude.rep, colour = 'Grade')
+
+
+#secGBM vs pGBM vs LGG#
+pca_3 <- prcomp(RUVIII.normalized.data.transformed_exclude.rep_serum[,-c(1:5)])
+autoplot(pca_3, data = RUVIII.normalized.data.transformed_exclude.rep_serum, 
+         colour = 'Grade', shape = 'IDHmutant', size = 'Age')+
+  scale_shape_manual(values=c(16,10))
+
 
 
 
