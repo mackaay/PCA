@@ -1,0 +1,39 @@
+library(caret)  
+library(Rtsne)
+
+##loading data
+data_tsne <- RUVIII.normalized.data.transformed_exclude.rep[,-c(1:6)]
+
+##Rtsne function
+set.seed(9)
+tsne_model1 <- Rtsne(as.matrix(data_tsne), check_duplicates = F, pca = T, perplexity = 30, theta = 0.5, dims = 2)
+
+## getting the two dimension matrix
+d_tsne_1 <- as.data.frame(tsne_model1$Y)
+
+## plotting the results without clustering
+ggplot(d_tsne_1, aes(x = V1, y = V2))+
+  geom_point(size = 2)+
+  guides(colour=guide_legend(override.aes=list(size=6))) +
+  xlab("") + ylab("") +
+  ggtitle("t-SNE") +
+  theme_light(base_size=20) +
+  theme(axis.text.x=element_blank(),
+        axis.text.y=element_blank()) +
+  scale_colour_brewer(palette = "Set2")
+
+## binding clinical info from original data frame
+clinicalinfo <- RUVIII.normalized.data.transformed_exclude.rep[,-c(7:804)]
+d_tsne_2 <- cbind(d_tsne_1, clinicalinfo)
+
+## Plotting
+ggplot(d_tsne_2, aes(x = V1, y = V2, colour = Grade))+
+  geom_point(size = 3)
+
+d_tsne_2$Batch <- as.factor(d_tsne_2$Batch)
+ggplot(d_tsne_2, aes(x = V1, y = V2, colour = Batch))+
+  geom_point(size = 3)
+
+ggplot(d_tsne_2, aes(x = V1, y = V2, colour = IDHmutant))+
+  geom_point(size = 3)+
+  scale_color_brewer(palette = "Set2")
