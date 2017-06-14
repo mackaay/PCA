@@ -1,0 +1,32 @@
+## heatmap from microarray data directly##
+source("http://www.bioconductor.org/biocLite.R")
+biocLite("ALL")
+library("ALL")
+data("ALL")
+
+##Ignoring the samples which came back negative on this test (NEG), most have been classified as having a translocation between chromosomes 9 and 22 (BCR/ABL), or a translocation between chromosomes 4 and 11 (ALL1/AF4).
+##For the purposes of this example, we are only interested in these two subgroups, so we will create a filtered version of the dataset using this as a selection criteria:
+eset <- ALL[, ALL$mol.biol %in% c("BCR/ABL", "ALL1/AF4")]
+
+heatmap(exprs(eset[1:100,]))
+
+##use the lmFit function (from the limma package) to look for genes differentially expressed between the two groups.
+library(limma)
+f <- factor(as.character(eset$mol.biol))
+design <- model.matrix(~f)
+fit <- eBayes(lmFit(eset,design))
+
+##select those genes that have adjusted p-values below 0.05, using a very stringent Holm method to select a small number (165) of genes.
+selected  <- p.adjust(fit$p.value[, 2]) <0.05
+esetSel <- eset [selected, ]
+
+heatmap(exprs(esetSel))
+
+color.map <- function(mol.biol) { if (mol.biol=="ALL1/AF4") "#FF0000" else "#0000FF" }
+patientcolors <- unlist(lapply(esetSel$mol.bio, color.map))
+heatmap(exprs(esetSel), col=topo.colors(100), ColSideColors=patientcolors)
+
+
+library("gplots")
+heatmap.2(exprs(esetSel), col=redgreen(75), scale="row", ColSideColors=patientcolors,
+          key=TRUE, symkey=FALSE, density.info="none", trace="none", cexRow=0.5)
