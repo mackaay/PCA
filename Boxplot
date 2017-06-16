@@ -1,0 +1,16 @@
+library(ggplot2)
+ggplot(SpikeIn_batch, aes(x=batch, y= hsa-let-7a-5p))+geom_boxplot()
+
+
+set.seed(1234)
+dat <- data.frame(cond = factor(rep(c("A","B"), each=200)), rating = c(rnorm(200),rnorm(200, mean=.8)))
+
+require(reshape2)
+ggplot(data = melt(SpikeIn_batch), aes(x= Sample, y = value))+
+  geom_boxplot(aes(fill = value)) +
+  scale_y_log10()+
+  ggtitle("Spike-In Normalization")
+
+boxplot(t(SpikeIn_batch))
+
+a <- melt(SpikeIn_batch)
