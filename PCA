@@ -55,7 +55,7 @@ autoplot(pca_1, data = RUVIII.normalized.data.transformed_exclude.rep, colour = 
 #norm frame#
 autoplot(pca_1, data = RUVIII.normalized.data.transformed_exclude.rep, colour = 'Grade', frame = T, frame.type = 'norm')
 #label#
-autoplot(pca_1, data = RUVIII.normalized.data.transformed_exclude.rep, colour = 'Grade', shape = F, label.size=3)
+autoplot(pca_1, data = RUVIII.normalized.data.transformed_exclude.rep, colour = 'Grade', shape = F, size=3)
 as.factor(RUVIII.normalized.data.transformed_exclude.rep$IDH1)
 #colour by IDH1#
 autoplot(pca_1, data = RUVIII.normalized.data.transformed_exclude.rep, colour = 'IDHmutant')
